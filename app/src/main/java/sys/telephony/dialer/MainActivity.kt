@@ -1,6 +1,9 @@
 package sys.telephony.dialer
 
+import android.app.role.RoleManager
+import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.telecom.TelecomManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
