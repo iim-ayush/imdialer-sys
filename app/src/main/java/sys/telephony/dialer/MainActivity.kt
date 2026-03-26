@@ -31,6 +31,12 @@ class MainActivity : ComponentActivity() {
         // Permissions handled
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Re-check permissions when returning to activity
+        checkDefaultDialerRole()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
