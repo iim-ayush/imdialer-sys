@@ -13,8 +13,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import sys.telephony.dialer.telephony.CallStateManager
 import sys.telephony.dialer.ui.CallScreen
 import sys.telephony.dialer.ui.ContactsScreen
@@ -111,7 +112,17 @@ fun DialerApp() {
                 } else {
                     when (selectedTab) {
                         0 -> ContactsScreen()
-                        1 -> Text("Dialer UI placeholder", modifier = Modifier.fillMaxSize())
+                        1 -> Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+                        ) {
+                            Text("Dialer UI placeholder")
+                            Spacer(Modifier.height(16.dp))
+                            Button(onClick = { CallStateManager.toggleMockCall() }) {
+                                Text("Toggle Mock Call Mode")
+                            }
+                        }
                     }
                 }
             }

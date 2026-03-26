@@ -21,11 +21,11 @@ import sys.telephony.dialer.recorder.CallRecorder
 import java.io.File
 
 @Composable
-fun CallScreen(call: Call) {
+fun CallScreen(call: CallData) {
     val context = LocalContext.current
     var isRecording by remember { mutableStateOf(false) }
-    val callState by remember { derivedStateOf { call.state } }
-    val callerName = call.details.handle?.schemeSpecificPart ?: "Unknown Caller"
+    val callState = call.state
+    val callerName = call.phoneNumber
 
     Column(
         modifier = Modifier
@@ -52,10 +52,10 @@ fun CallScreen(call: Call) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            if (callState == Call.STATE_RINGING) {
+            if (callState == android.telecom.Call.STATE_RINGING) {
                 // Answer Button
                 Button(
-                    onClick = { call.answer(0) },
+                    onClick = { CallStateManager.answer() },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                     shape = CircleShape,
                     modifier = Modifier.size(80.dp)
@@ -66,10 +66,7 @@ fun CallScreen(call: Call) {
 
             // Reject/Hangup Button
             Button(
-                onClick = { 
-                    if (callState == Call.STATE_RINGING) call.reject(false, null)
-                    else call.disconnect()
-                },
+                onClick = { CallStateManager.disconnect() },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                 shape = CircleShape,
                 modifier = Modifier.size(80.dp)
@@ -79,9 +76,10 @@ fun CallScreen(call: Call) {
         }
 
         // Recording Controls
-        if (callState == Call.STATE_ACTIVE) {
+        if (callState == android.telecom.Call.STATE_ACTIVE) {
             Button(
                 onClick = {
+                    if (call.isMock) return@Button
                     if (isRecording) {
                         CallRecorder.stopRecording()
                         isRecording = false
@@ -108,10 +106,10 @@ fun CallScreen(call: Call) {
 }
 
 private fun getCallStateString(state: Int): String = when (state) {
-    Call.STATE_RINGING -> "Incoming Call..."
-    Call.STATE_DIALING -> "Dialing..."
-    Call.STATE_ACTIVE -> "Active Call"
-    Call.STATE_DISCONNECTED -> "Disconnected"
-    Call.STATE_HOLDING -> "On Hold"
+    android.telecom.Call.STATE_RINGING -> "Incoming Call..."
+    android.telecom.Call.STATE_DIALING -> "Dialing..."
+    android.telecom.Call.STATE_ACTIVE -> "Active Call"
+    android.telecom.Call.STATE_DISCONNECTED -> "Disconnected"
+    android.telecom.Call.STATE_HOLDING -> "On Hold"
     else -> "Connecting..."
 }

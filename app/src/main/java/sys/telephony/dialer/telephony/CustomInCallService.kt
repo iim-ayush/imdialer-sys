@@ -9,7 +9,7 @@ class CustomInCallService : InCallService() {
     private val callCallback = object : Call.Callback() {
         override fun onStateChanged(call: Call, state: Int) {
             Log.d("CustomInCallService", "Call state changed: $state")
-            CallStateManager.updateState(state)
+            CallStateManager.updateCall(call)
         }
     }
 
