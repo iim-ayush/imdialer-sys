@@ -5,6 +5,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+data class CallData(
+    val id: String,
+    val phoneNumber: String,
+    val state: Int,
+    val isMock: Boolean = false
+)
+
 object CallStateManager {
     private var realCall: Call? = null
     private val _activeCall = MutableStateFlow<CallData?>(null)
