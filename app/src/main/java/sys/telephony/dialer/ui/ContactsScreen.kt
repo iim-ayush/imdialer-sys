@@ -11,24 +11,40 @@ import androidx.compose.ui.unit.dp
 import sys.telephony.dialer.contacts.Contact
 import sys.telephony.dialer.contacts.ContactsRepository
 
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
+
 @Composable
 fun ContactsScreen() {
     val context = LocalContext.current
     val repository = remember { ContactsRepository(context) }
     var contacts by remember { mutableStateOf<List<Contact>>(emptyList()) }
-
-    LaunchedEffect(Unit) {
-        contacts = repository.getContacts()
+    var hasPermission by remember { 
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+        )
     }
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(contacts) { contact ->
-            ListItem(
-                headlineContent = { Text(contact.name) },
-                supportingContent = { Text(contact.phoneNumber) },
-                modifier = Modifier.padding(horizontal = 8.dp)
-            )
-            Divider()
+    LaunchedEffect(Unit) {
+        if (hasPermission) {
+            contacts = repository.getContacts()
+        }
+    }
+
+    if (!hasPermission) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+            Text("Please grant Contacts permission in Settings")
+        }
+    } else {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(contacts) { contact ->
+                ListItem(
+                    headlineContent = { Text(contact.name) },
+                    supportingContent = { Text(contact.phoneNumber) },
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
+                Divider()
+            }
         }
     }
 }
