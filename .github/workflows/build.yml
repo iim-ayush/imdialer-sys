@@ -27,7 +27,7 @@ jobs:
         if [ -f "./gradlew" ]; then
           ./gradlew assembleDebug
         else
-          gradle wrapper
+          gradle wrapper --gradle-version 8.6
           chmod +x gradlew
           ./gradlew assembleDebug
         fi
