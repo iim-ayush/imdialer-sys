@@ -1,0 +1,6 @@
+id=customdialer
+name=Custom Android Dialer (Native Recording)
+version=v1.0
+versionCode=1
+author=Antigravity
+description=A custom systemless dialer with native call recording capabilities enabled via priv-app permissions.

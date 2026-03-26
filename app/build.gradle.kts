@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.test.audioprobe"
+    namespace = "sys.telephony.dialer"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.test.audioprobe"
+        applicationId = "sys.telephony.dialer"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
